@@ -1,9 +1,12 @@
 import chalk from 'chalk'
 console.log(chalk.yellowBright('[INFO] Bot Starting...'));
-import { Boom } from '@hapi/boom'
-import makeWASocket, { makeInMemoryStore, useMultiFileAuthState, DisconnectReason, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, WAMessageKey, WAMessageContent, proto } from '@adiwajshing/baileys';
+import makeWASocket, { makeInMemoryStore, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, WAMessageKey, WAMessageContent, proto, Contact } from '@adiwajshing/baileys';
 import P, { Logger } from 'pino';
-import { handleConnectionUpdate } from './events';
+import { handleConnectionUpdate, handleContactsUpdate } from './events';
+
+
+
+
 
 (async () => {
 
@@ -17,8 +20,16 @@ import { handleConnectionUpdate } from './events';
         setInterval(() => {
             store?.writeToFile('./chat-data.json')
         }, 10_000);
-
         const { state, saveCreds } = await useMultiFileAuthState('auth')
+        const eventFunctions = {
+            'connection.update': handleConnectionUpdate,
+            'creds.update': saveCreds,
+            'contacts.upsert': handleContactsUpdate,
+            // 'presence.update': handlePresenceUpdate,
+            // 'messages.upsert': handleMessagesUpsert,
+            // 'group-participants.update': handleGroupParticipantsUpdate,
+            // add more event types and corresponding functions as needed
+        };
         // fetch latest version of WA Web
         const { version, isLatest } = await fetchLatestBaileysVersion()
         console.log(chalk.yellowBright(`using WA v${version.join('.')}, isLatest: ${isLatest}`));
@@ -47,14 +58,13 @@ import { handleConnectionUpdate } from './events';
             // events is a map for event name => event data
             async (events) => {
 
-                if (events['connection.update']) {
-                    const update = events['connection.update'];
-                    await handleConnectionUpdate(update, startSock);
+                const eventKeys = Object.keys(events);
+                for (const eventKey of eventKeys) {
+                    const eventFunction = eventFunctions[eventKey];
+                    if (eventFunction) {
+                        await eventFunction({ sock, store, startSock, event: events[eventKey] });
+                    }
                 }
-                if (events['creds.update']) {
-                    await saveCreds()
-                }
-
 
 
             })

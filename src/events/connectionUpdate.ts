@@ -2,9 +2,9 @@ import { DisconnectReason, } from '@adiwajshing/baileys';
 import { Boom } from '@hapi/boom'
 
 import chalk = require('chalk');
-async function handleConnectionUpdate(update, startSock) {
+async function handleConnectionUpdate({ event, startSock }) {
 
-    const { connection, lastDisconnect } = update;
+    const { connection, lastDisconnect } = event;
     if (connection === 'close') {
         if ((lastDisconnect.error as Boom)?.output?.statusCode !== DisconnectReason.loggedOut) {
             startSock()
