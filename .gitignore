@@ -1,0 +1,7 @@
+**/*.db
+node_modules
+session.data.json
+dist
+**/*.env
+auth
+chat-data.json
