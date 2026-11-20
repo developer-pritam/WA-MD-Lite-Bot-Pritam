@@ -1,8 +1,8 @@
 import { DisconnectReason, } from '@adiwajshing/baileys';
 import { Boom } from '@hapi/boom'
-
 import chalk = require('chalk');
 async function handleConnectionUpdate({ event, startSock }) {
+    console.log(chalk.yellowBright("[INFO] Connection Update"));
 
     const { connection, lastDisconnect } = event;
     if (connection === 'close') {

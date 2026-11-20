@@ -1,13 +1,21 @@
 {
-  "name": "custombot-lite",
+  "name": "prits-wa-bot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsc && node ./dist/index.js",
+    "start": "tsc && node ./dist/src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "prits",
+    "prits-wa-bot",
+    "wa",
+    "bot",
+    "whatsapp",
+    "whatsapp-bot",
+    "whatsapp-bot"
+  ],
   "author": "Pritam Kumar",
   "license": "ISC",
   "dependencies": {
@@ -15,13 +23,14 @@
     "@adiwajshing/keyed-db": "^0.2.4",
     "@hapi/boom": "^10.0.1",
     "chalk": "^4.1.1",
+    "dotenv": "^16.0.3",
     "node-cache": "^5.1.2",
     "pino": "^8.11.0"
   },
   "devDependencies": {
-    "link-preview-js": "^3.0.0",
-    "qrcode-terminal": "^0.12.0",
     "@types/node": "^16.0.0",
-    "@types/ws": "^8.0.0"
+    "@types/ws": "^8.0.0",
+    "link-preview-js": "^3.0.0",
+    "qrcode-terminal": "^0.12.0"
   }
 }
